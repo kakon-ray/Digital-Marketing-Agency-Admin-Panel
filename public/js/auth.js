@@ -19,7 +19,7 @@ $(document).ready(function(){
               timer: 1500,
             });
 
-            window.location.href = 'dashboard';
+            window.location.href = '/';
           }else{
             Swal.fire({
               icon: "error",

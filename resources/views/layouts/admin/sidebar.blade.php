@@ -51,8 +51,8 @@
         <div id="collapsePages2" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Your Blog</h6>
-                <a class="collapse-item" href="login.html">Manage Blog</a>
-                <a class="collapse-item" href="login.html">Add Blog</a>
+                <a class="collapse-item" href="/blog/manage">Manage Blog</a>
+                <a class="collapse-item" href="/blog/add">Add Blog</a>
             </div>
         </div>
     </li>

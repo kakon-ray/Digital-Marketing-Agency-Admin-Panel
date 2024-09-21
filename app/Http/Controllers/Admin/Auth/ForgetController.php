@@ -78,7 +78,7 @@ class ForgetController extends Controller
             
             if($responce){
                 DB::table('password_resets')->where('email',$request->email)->delete();
-                return redirect('admin/login');
+                return redirect('/login');
             }
         }
     }

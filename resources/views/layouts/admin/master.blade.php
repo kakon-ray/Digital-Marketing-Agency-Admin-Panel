@@ -90,6 +90,13 @@
         </div>
     </div>
 
+
+    <script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('summary-ckeditor');
+    </script>
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -100,12 +107,39 @@
     <!-- Custom scripts for all pages-->
     <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
 
+    <!-- custom js -->
+    <script src="{{asset('admin/js/custom.js')}}"></script>
+
+    <!-- jquery tost -->
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!--  alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('admin/js/notifications.js') }}"></script>
+
     <!-- Page level plugins -->
     <script src="{{asset('admin/vendor/chart.js/Chart.min.js')}}"></script>
 
     <!-- Page level custom scripts -->
     <script src="{{asset('admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
+
+    <script>
+        var desc;
+        ClassicEditor
+            .create(document.querySelector('#add_course_editor'), {
+                ckfinder: {
+                    uploadUrl: '{{ route('blog.image.upload') . '?_token=' . csrf_token() }}',
+                }
+            })
+            .then(editor => {
+                console.log(editor)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 
 </body>
 
