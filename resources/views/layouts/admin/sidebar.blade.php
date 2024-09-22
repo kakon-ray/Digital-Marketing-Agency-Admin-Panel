@@ -27,12 +27,12 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Admin Role </span>
+            <span>Users Manage</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Admin Role Management</h6>
-                <a class="collapse-item" href="login.html">Admin Controll</a>
+                <a class="collapse-item" href="login.html">Manage Users</a>
             </div>
         </div>
     </li>

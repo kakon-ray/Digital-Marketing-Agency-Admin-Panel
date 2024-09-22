@@ -8,6 +8,7 @@
     <form method="POST" id="submitloginform" action="{{ route('admin.login') }}">
         @csrf
 
+        <h1 class="text-center pb-4">Admin Login</h1>
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
