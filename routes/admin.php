@@ -18,6 +18,7 @@ Route::middleware(['AdminAuth'])->group(function () {
     Route::get('/blog/update/{id}', [BlogController::class, 'blog_update'])->name('blog.update');
     Route::post('/blog/update/submit', [BlogController::class, 'blog_update_submit'])->name('blog.update.submit');
     Route::get('/blog/delete', [BlogController::class, 'blog_delete'])->name('blog.delete');
+    Route::get('/blog/status', [BlogController::class, 'blog_status'])->name('blog.status');
 
 
 

@@ -77,6 +77,7 @@ class BlogController extends Controller
                     'desc' => $request->desc,
                     'image' => $image,
                     'category' => $request->category,
+                    'status' => false,
                 ]);
 
                 // DB::commit();
@@ -187,6 +188,7 @@ class BlogController extends Controller
                     $blog->desc = $request->desc;
                     $blog->category = $request->category;
                     $blog->image = $image;
+                    $blog->status = false;
 
                     $blog->save();
  
@@ -256,4 +258,42 @@ class BlogController extends Controller
             }
         }
     }
+
+
+public function blog_status(Request $request){
+    $blog = Blog::find($request->id);
+
+    if (is_null($blog)) {
+        return response()->json([
+            'msg' => "Blog Doesn't Exist",
+            'status' => 404
+        ], 404);
+    } else {
+        try {
+            if ($blog->status == false) {
+                $blog->status = true;
+                $message = 'Publish Blog';
+            } else {
+                $blog->status = false;
+                $message = 'Unpublish Blog';
+            }
+
+            // Save the updated status
+            $blog->save();
+
+            return response()->json([
+                'status' => 200,
+                'msg' => $message,
+            ], 200);
+
+        } catch (\Exception $err) {
+            return response()->json([
+                'msg' => "Internal Server Error",
+                'status' => 500,
+                'err_msg' => $err->getMessage()
+            ], 500);
+        }
+    }
+}
+
 }
