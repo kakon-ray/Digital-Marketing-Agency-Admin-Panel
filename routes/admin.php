@@ -11,6 +11,13 @@ use App\Http\Controllers\Admin\BlogController;
 Route::middleware(['AdminAuth'])->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
+
+    // blog category
+    Route::get('/blog/cateogry/add', [BlogController::class, 'blog_category_create'])->name('blog.category.add');
+    Route::get('/blog/category/update', [BlogController::class, 'blog_category_update'])->name('blog.category.update');
+    Route::get('/blog/category/manage', [BlogController::class, 'blog_category_manage'])->name('blog.category.manage');
+
+
     // blog management
     Route::get('/blog/add', [BlogController::class, 'blog_create'])->name('blog.add');
     Route::post('/blog/submit', [BlogController::class, 'blog_submit'])->name('blog.submit');

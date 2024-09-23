@@ -41,6 +41,26 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
+      <!-- Blog category management -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true"
+            aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Category Manage</span>
+        </a>
+        <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Your Blog Category</h6>
+                <a class="collapse-item" href="/blog/category/manage">Manage Blog Category</a>
+                <a class="collapse-item" href="/blog/cateogry/add">Add Blog Category</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+
     <!-- Blog management -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true"

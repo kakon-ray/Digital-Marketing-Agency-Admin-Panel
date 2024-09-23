@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,6 +16,28 @@ use Illuminate\Support\Facades\File;
 
 class BlogController extends Controller
 {
+
+    // this is blog category section
+    public function blog_category_create()
+    {
+        return view('admin.blog_category.add_category');
+        
+    }
+
+    public function blog_category_update()
+    {
+        return view('admin.blog_category.add_category');
+        
+    }
+    public function blog_category_manage()
+    {
+        $categories = BlogCategory::all();
+        return view('admin.blog_category.category_manage',compact('categories'));
+        
+    }
+
+
+    // this is blog section
     public function blog_create()
     {
         return view('admin.blog.blog_add');
