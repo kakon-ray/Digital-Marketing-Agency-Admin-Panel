@@ -21,36 +21,79 @@ class BlogController extends Controller
     public function blog_category_create()
     {
         return view('admin.blog_category.add_category');
-        
     }
 
     public function blog_category_update()
     {
         return view('admin.blog_category.add_category');
-        
     }
     public function blog_category_manage()
     {
         $categories = BlogCategory::all();
-        return view('admin.blog_category.category_manage',compact('categories'));
-        
+        return view('admin.blog_category.category_manage', compact('categories'));
+    }
+    public function blog_category_submit(Request $request)
+    {
+        $arrayRequest = [
+            "category_name" => $request->category_name,
+        ];
+
+        $arrayValidate  = [
+            'category_name' => 'required',
+        ];
+
+        $response = Validator::make($arrayRequest, $arrayValidate);
+
+        if ($response->fails()) {
+            $msg = '';
+            foreach ($response->getMessageBag()->toArray() as $item) {
+                $msg = $item;
+            };
+
+            return response()->json([
+                'status' => 400,
+                'msg' => $msg
+            ]);
+        }
+
+        try {
+            $slug = Str::slug($request->category_name, '-');
+
+            $blogcategory = BlogCategory::create([
+                'category_name' => $request->category_name,
+                'category_slug' =>  $slug,
+            ]);
+
+            if ($blogcategory) {
+                return response()->json([
+                    'status' => 200,
+                    'msg' => 'Blog Category Add Successfully'
+                ]);
+            }
+        } catch (\Exception $err) {
+            return response()->json([
+                'status' => 500,
+                'msg' => 'Internal Server Error',
+                'err_msg' => $err->getMessage()
+            ]);
+        }
     }
 
 
     // this is blog section
     public function blog_create()
     {
-        return view('admin.blog.blog_add');
-        
+        $blog_category = BlogCategory::all();
+        return view('admin.blog.blog_add',compact('blog_category'));
     }
 
     public function blog_update(Request $request)
     {
-        $blog = Blog::where('id',$request->id)->first();
-        return view('admin.blog.blog_update',compact('blog'));
-        
+        $blog = Blog::where('id', $request->id)->first();
+        $blog_category = BlogCategory::all();
+        return view('admin.blog.blog_update', compact('blog','blog_category'));
     }
-    
+
     public function blog_submit(Request $request)
     {
         $arrayRequest = [
@@ -88,10 +131,10 @@ class BlogController extends Controller
                 $slug = Str::slug($request->title, '-');
                 $file = $request->file('image');
                 $filename = $slug . '-' . hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-    
+
                 $img = Image::make($file);
                 $img->resize(500, 300)->save(public_path('blogs/' . $filename));
-    
+
                 $host = $_SERVER['HTTP_HOST'];
                 $image = "http://" . $host . "/blogs/" . $filename;
 
@@ -99,7 +142,7 @@ class BlogController extends Controller
                     'title' => $request->title,
                     'desc' => $request->desc,
                     'image' => $image,
-                    'category' => $request->category,
+                    'blogcategory_id' => $request->category,
                     'status' => false,
                 ]);
 
@@ -122,7 +165,6 @@ class BlogController extends Controller
                 ]);
             }
         }
-        
     }
 
 
@@ -180,7 +222,7 @@ class BlogController extends Controller
                     'msg' => $msg
                 ]);
             } else {
-              
+
 
                 try {
 
@@ -196,10 +238,10 @@ class BlogController extends Controller
 
                         $file = $request->file('image');
                         $filename = $slug . '-' . hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-            
+
                         $img = Image::make($file);
                         $img->resize(500, 300)->save(public_path('blogs/' . $filename));
-            
+
                         $host = $_SERVER['HTTP_HOST'];
                         $image = "http://" . $host . "/blogs/" . $filename;
                     } else {
@@ -209,13 +251,11 @@ class BlogController extends Controller
 
                     $blog->title = $request->title;
                     $blog->desc = $request->desc;
-                    $blog->category = $request->category;
+                    $blog->blogcategory_id = $request->category;
                     $blog->image = $image;
                     $blog->status = false;
 
                     $blog->save();
- 
-
                 } catch (\Exception $err) {
                     $blog = null;
                 }
@@ -234,15 +274,17 @@ class BlogController extends Controller
                 }
             }
         }
-        
     }
 
-    public function blog_manage(Request $request){
+    public function blog_manage(Request $request)
+    {
         $blogs = Blog::all();
-        return view('admin.blog.blog_manage',compact('blogs'));
+        $blog_category = BlogCategory::all();
+        return view('admin.blog.blog_manage', compact('blogs','blog_category'));
     }
 
-    public function blog_delete(Request $request){
+    public function blog_delete(Request $request)
+    {
         $blog = Blog::find($request->id);
 
         if (is_null($blog)) {
@@ -263,7 +305,7 @@ class BlogController extends Controller
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
-                
+
                 $blog->delete();
 
                 return response()->json([
@@ -283,40 +325,39 @@ class BlogController extends Controller
     }
 
 
-public function blog_status(Request $request){
-    $blog = Blog::find($request->id);
+    public function blog_status(Request $request)
+    {
+        $blog = Blog::find($request->id);
 
-    if (is_null($blog)) {
-        return response()->json([
-            'msg' => "Blog Doesn't Exist",
-            'status' => 404
-        ], 404);
-    } else {
-        try {
-            if ($blog->status == false) {
-                $blog->status = true;
-                $message = 'Publish Blog';
-            } else {
-                $blog->status = false;
-                $message = 'Unpublish Blog';
+        if (is_null($blog)) {
+            return response()->json([
+                'msg' => "Blog Doesn't Exist",
+                'status' => 404
+            ], 404);
+        } else {
+            try {
+                if ($blog->status == false) {
+                    $blog->status = true;
+                    $message = 'Publish Blog';
+                } else {
+                    $blog->status = false;
+                    $message = 'Unpublish Blog';
+                }
+
+                // Save the updated status
+                $blog->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'msg' => $message,
+                ], 200);
+            } catch (\Exception $err) {
+                return response()->json([
+                    'msg' => "Internal Server Error",
+                    'status' => 500,
+                    'err_msg' => $err->getMessage()
+                ], 500);
             }
-
-            // Save the updated status
-            $blog->save();
-
-            return response()->json([
-                'status' => 200,
-                'msg' => $message,
-            ], 200);
-
-        } catch (\Exception $err) {
-            return response()->json([
-                'msg' => "Internal Server Error",
-                'status' => 500,
-                'err_msg' => $err->getMessage()
-            ], 500);
         }
     }
-}
-
 }

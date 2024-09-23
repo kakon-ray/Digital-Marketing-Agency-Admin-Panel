@@ -27,7 +27,7 @@
         <div class="card-header text-center">Add Blog Category</div>
 
         <div class="card-body mt-0">
-            <form method="POST" action="{{ route('blog.submit') }}" id="submit_blog" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('blog.category.submit') }}" id="submit_blog_category" enctype="multipart/form-data">
                 @csrf
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -35,7 +35,7 @@
                     <div class="col-lg-8 mx-auto">
                         <div class="my-4">
                             <label>Category name</label>
-                            <input required type="text" class="form-control" name="title" placeholder="Enter New Category name">
+                            <input required type="text" class="form-control" name="category_name" placeholder="Enter New Category name">
                         </div>
                     </div>
 

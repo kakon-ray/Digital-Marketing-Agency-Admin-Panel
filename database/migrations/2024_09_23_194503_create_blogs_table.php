@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('blogcategory_id');
             $table->string('title')->unique();
             $table->string('category')->nullable();
             $table->string('slug')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('date')->nullable();
             $table->text('desc')->nullable();
             $table->timestamps();
+            $table->foreign('blogcategory_id')->references('id')->on('blog_categories')->onDelete('cascade');
         });
     }
 

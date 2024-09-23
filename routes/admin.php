@@ -14,8 +14,13 @@ Route::middleware(['AdminAuth'])->group(function () {
 
     // blog category
     Route::get('/blog/cateogry/add', [BlogController::class, 'blog_category_create'])->name('blog.category.add');
-    Route::get('/blog/category/update', [BlogController::class, 'blog_category_update'])->name('blog.category.update');
+    Route::get('/blog/category/update/{id}', [BlogController::class, 'blog_category_update'])->name('blog.category.update');
     Route::get('/blog/category/manage', [BlogController::class, 'blog_category_manage'])->name('blog.category.manage');
+    Route::post('/blog/cateogry/submit', [BlogController::class, 'blog_category_submit'])->name('blog.category.submit');
+
+    Route::post('/blog/category/update/submit', [BlogController::class, 'blog_category_update_submit'])->name('blog.category.update.submit');
+    Route::get('/blog/category/delete', [BlogController::class, 'blog_cateogry_delete'])->name('blog.category.delete');
+
 
 
     // blog management

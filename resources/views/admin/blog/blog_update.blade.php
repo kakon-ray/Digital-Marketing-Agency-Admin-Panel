@@ -37,23 +37,19 @@
                     <div class="col-lg-8">
                         <div class="my-4">
                             <label>Blog Title</label>
-                            <input required type="text" class="form-control" name="title" value="{{$blog->title}}" placeholder="Blog Title">
+                            <input required type="text" class="form-control" name="title" value="{{$blog->title}}"
+                                placeholder="Blog Title">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="my-4">
                             <div class="my-4">
                                 <label class="form-label">Category</label>
-                                <select class="form-control rounded-0" name="category" value="{{$blog->category}}">
-                                    <option value="Web Development" selected>Web Development</option>
-                                    <option value="Laravel">Laravel</option>
-                                    <option value="Web Design">Web Design</option>
-                                    <option value="Front End Development">Front End Development</option>
-                                    <option value="Back End Development">Back End</option>
-                                    <option value="Programming">Programming</option>
-                                    <option value="Digital Marketing">Digital Marketing</option>
-                                    <option value="Video Editing">Video Editing</option>
-                                    <option value="Laravel Website">Laravel Website</option>
+                                <select class="form-control rounded-0" name="category">
+                                    <option value="">Select Blog Category</option>
+                                    @foreach($blog_category as $item)
+                                    <option value="{{$item->id}}" {{$item->id == $blog->blogcategory_id ? 'selected' : ""}}>{{$item->category_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -63,14 +59,14 @@
                 <div class="mb-4">
                     <label class="form-label">Blog Image</label>
                     <input type="file" name="image" accept="image/*" class="dropify">
-                    <input name="old_image" value="{{ $blog->image }}" type="text"
-                    class="form-control d-none">
+                    <input name="old_image" value="{{ $blog->image }}" type="text" class="form-control d-none">
                 </div>
 
 
                 <div class="my-4">
                     <label>Blog Details</label>
-                    <textarea class="form-control" id="add_course_editor" row="10" name="desc">@php echo $blog->desc @endphp</textarea>
+                    <textarea class="form-control" id="add_course_editor" row="10"
+                        name="desc">@php echo $blog->desc @endphp</textarea>
                 </div>
 
 

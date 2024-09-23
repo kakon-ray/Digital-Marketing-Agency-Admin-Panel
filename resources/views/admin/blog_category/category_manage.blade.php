@@ -31,7 +31,7 @@
                       
 
                         <td class="th-sm" style="min-width: 200px;">
-                            <a href="{{ route('blog.update', ['id' => $item->id]) }}" type="button"
+                            <a href="{{ route('blog.category.update', ['id' => $item->id]) }}" type="button"
                                 class="btn btn-info btn-circle btn-sm"><i class="fas fa-edit"></i></a>
                             <a type="button" onclick="delete_blog_category({!! $item->id !!})"
                                 class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a>

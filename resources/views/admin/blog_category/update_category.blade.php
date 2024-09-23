@@ -24,7 +24,7 @@
 <div class="container-fluid">
 
     <div class="card">
-        <div class="card-header text-center">Add Blog Category</div>
+        <div class="card-header text-center">Update Blog Category</div>
 
         <div class="card-body mt-0">
             <form method="POST" action="{{ route('blog.submit') }}" id="submit_blog" enctype="multipart/form-data">
