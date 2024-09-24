@@ -23,30 +23,37 @@
 
 <div class="container-fluid">
 
-    <div class="card">
-        <div class="card-header text-center">Update Blog Category</div>
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-header text-center">Update Blog Category</div>
 
-        <div class="card-body mt-0">
-            <form method="POST" action="{{ route('blog.submit') }}" id="submit_blog" enctype="multipart/form-data">
-                @csrf
+                <div class="card-body mt-0">
+                    <form method="POST" action="{{ route('blog.cateogry.update.submit') }}" id="submit_blog_category"
+                        enctype="multipart/form-data">
+                        @csrf
 
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="my-4">
-                            <label>Category name</label>
-                            <input required type="text" class="form-control" name="title" placeholder="Enter New Category name">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="id" value="{{$blog->id}}">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="my-4">
+                                    <label>Category name</label>
+                                    <input required type="text" class="form-control" name="category_name"
+                                        placeholder="Enter New Category name">
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
 
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">
-                        Submit
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\BlogController;
 Route::middleware(['AdminAuth'])->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
+    Route::get('/admin/manage', [DashboardController::class, 'admin_manage'])->name('admin.manage');
+    Route::get('/admin/manage/toggle', [DashboardController::class, 'admin_manage_toggle'])->name('admin.manage');
 
     // blog category
     Route::get('/blog/cateogry/add', [BlogController::class, 'blog_category_create'])->name('blog.category.add');
@@ -18,7 +20,7 @@ Route::middleware(['AdminAuth'])->group(function () {
     Route::get('/blog/category/manage', [BlogController::class, 'blog_category_manage'])->name('blog.category.manage');
     Route::post('/blog/cateogry/submit', [BlogController::class, 'blog_category_submit'])->name('blog.category.submit');
 
-    Route::post('/blog/category/update/submit', [BlogController::class, 'blog_category_update_submit'])->name('blog.category.update.submit');
+    Route::post('/blog/category/update/submit', [BlogController::class, 'blog_category_update_submit'])->name('blog.cateogry.update.submit');
     Route::get('/blog/category/delete', [BlogController::class, 'blog_cateogry_delete'])->name('blog.category.delete');
 
 

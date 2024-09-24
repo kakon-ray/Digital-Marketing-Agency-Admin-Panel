@@ -23,9 +23,10 @@ class BlogController extends Controller
         return view('admin.blog_category.add_category');
     }
 
-    public function blog_category_update()
+    public function blog_category_update(Request $request)
     {
-        return view('admin.blog_category.add_category');
+        $blog = BlogCategory::where('id', $request->id)->first();
+        return view('admin.blog_category.update_category', compact('blog'));
     }
     public function blog_category_manage()
     {
@@ -34,6 +35,16 @@ class BlogController extends Controller
     }
     public function blog_category_submit(Request $request)
     {
+        $slug = Str::slug($request->category_name, '-');
+
+        $existCategory = BlogCategory::where('category_slug', $slug)->count();
+        if ($existCategory) {
+            return response()->json([
+                'status' => 200,
+                'msg' => 'Already have this category please enter new category'
+            ]);
+        }
+
         $arrayRequest = [
             "category_name" => $request->category_name,
         ];
@@ -57,7 +68,7 @@ class BlogController extends Controller
         }
 
         try {
-            $slug = Str::slug($request->category_name, '-');
+
 
             $blogcategory = BlogCategory::create([
                 'category_name' => $request->category_name,
@@ -78,20 +89,112 @@ class BlogController extends Controller
             ]);
         }
     }
+    public function blog_category_update_submit(Request $request)
+    {
+        $slug = Str::slug($request->category_name, '-');
+
+        // Check if the category slug already exists
+        $existCategory = BlogCategory::where('category_slug', $slug)->count();
+        if ($existCategory) {
+            return response()->json([
+                'status' => 200,
+                'msg' => 'This category already exists, please enter a new category'
+            ]);
+        }
+
+        // Prepare the data for validation
+        $arrayRequest = [
+            "category_name" => $request->category_name,
+        ];
+
+        // Set validation rules
+        $arrayValidate  = [
+            'category_name' => 'required',
+        ];
+
+        // Perform validation
+        $response = Validator::make($arrayRequest, $arrayValidate);
+
+        if ($response->fails()) {
+            $msg = '';
+            foreach ($response->getMessageBag()->toArray() as $item) {
+                $msg = $item;
+            }
+
+            return response()->json([
+                'status' => 400,
+                'msg' => $msg
+            ]);
+        }
+
+        try {
+            // Update the blog category
+            $blogcategory = BlogCategory::where('id', $request->id)->update([
+                'category_name' => $request->category_name,
+                'category_slug' =>  $slug,
+            ]);
+
+            if ($blogcategory) {
+                return response()->json([
+                    'status' => 200,
+                    'msg' => 'Blog Category Updated Successfully'
+                ]);
+            }
+        } catch (\Exception $err) {
+            return response()->json([
+                'status' => 500,
+                'msg' => 'Internal Server Error',
+                'err_msg' => $err->getMessage()
+            ]);
+        }
+    }
+
+    public function blog_cateogry_delete(Request $request)
+    {
+        $blogcategory = BlogCategory::find($request->id);
+
+        if (is_null($blogcategory)) {
+
+            return response()->json([
+                'msg' => "Blog Category Doesnt Exists",
+                'status' => 404
+            ], 404);
+        } else {
+
+
+            try {
+
+                $blogcategory->delete();
+
+                return response()->json([
+                    'status' => 200,
+                    'msg' => 'Delete Blog Category',
+                ], 200);
+            } catch (\Exception $err) {
+
+
+                return response()->json([
+                    'msg' => "Internal Server Error",
+                    'status' => 500,
+                    'err_msg' => $err->getMessage()
+                ], 500);
+            }
+        }
+    }
 
 
     // this is blog section
     public function blog_create()
     {
         $blog_category = BlogCategory::all();
-        return view('admin.blog.blog_add',compact('blog_category'));
+        return view('admin.blog.blog_add', compact('blog_category'));
     }
 
     public function blog_update(Request $request)
     {
         $blog = Blog::where('id', $request->id)->first();
         $blog_category = BlogCategory::all();
-        return view('admin.blog.blog_update', compact('blog','blog_category'));
+        return view('admin.blog.blog_update', compact('blog', 'blog_category'));
     }
 
     public function blog_submit(Request $request)
@@ -280,7 +383,7 @@ class BlogController extends Controller
     {
         $blogs = Blog::all();
         $blog_category = BlogCategory::all();
-        return view('admin.blog.blog_manage', compact('blogs','blog_category'));
+        return view('admin.blog.blog_manage', compact('blogs', 'blog_category'));
     }
 
     public function blog_delete(Request $request)

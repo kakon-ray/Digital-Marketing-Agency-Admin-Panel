@@ -1,6 +1,8 @@
 @extends('layouts.admin.master')
 @section('title') {{'Dashboard | Laravel Auth '}} @endsection
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <div class="container-fluid">
     <div class="row">
@@ -15,26 +17,28 @@
             <table id="VisitorDt" class="table table-bordered dataTable" cellspacing="0" width="100%">
                 <thead class="table-dark ">
                     <tr>
-                        <th class="th-sm text-center">Name</th>
-                        <th class="th-sm text-center">Slug</th>
+                        <th class="th-sm text-center">Admin Name</th>
+                        <th class="th-sm text-center">Admin Email</th>
+                        <th class="th-sm text-center">Admin Status</th>
                         <th class="th-sm text-center">Action</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $item)
+                    @foreach ($admin as $item)
                     <tr class="text-center">
-                      
-                        
-                        <td class="th-sm ">{{ $item->category_name }}</td>
-                        <td class="th-sm ">{{ $item->category_slug }}</td>
-                      
+
+
+                        <td class="th-sm ">{{ $item->name }}</td>
+                        <td class="th-sm ">{{ $item->email }}</td>
+                        <td class="th-sm ">{{ $item->role }}</td>
+
 
                         <td class="th-sm" style="min-width: 200px;">
-                            <a href="{{ route('blog.category.update', ['id' => $item->id]) }}" type="button"
-                                class="btn btn-info btn-circle btn-sm"><i class="fas fa-edit"></i></a>
-                            <a type="button" onclick="delete_blog_category({!! $item->id !!})"
-                                class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" style="cursor:pointer" {{$item->role
+                                == 'admin' || $item->role == 'superadmin' ? 'checked' : ""}} onclick="admin_role_status({!! $item->id !!})" role="switch" id="flexSwitchCheckDefault">
+                            </div>
                         </td>
 
                     </tr>
@@ -46,20 +50,20 @@
     </div>
 </div>
 <script>
-    const delete_blog_category = (id) => {
+    const admin_role_status = (id) => {
         Swal.fire({
             customClass: 'swalstyle',
             title: 'Are you sure?',
-            text: "Delete this Category",
+            text: "Change Admin Status",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .get("/blog/category/delete", {
+                    .get("/admin/manage/toggle", {
                         params: {
                             id: id
                         }
@@ -109,6 +113,10 @@
 
     }
 
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
 </script>
 
 @endsection
