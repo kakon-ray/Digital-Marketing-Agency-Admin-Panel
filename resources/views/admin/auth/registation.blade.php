@@ -1,4 +1,5 @@
 @extends('layouts.admin.guest')
+@section('title') {{'Dashboard | Laravel Auth '}} @endsection
 @section('content')
     <form method="POST" action="{{ route('admin.register') }}">
         @csrf
